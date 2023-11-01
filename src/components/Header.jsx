@@ -40,7 +40,7 @@ const Header = () => {
         </div>
         <BiAlignJustify className='text-2xl relative' onClick={letToggle}/>
         {toggle &&(
-           <ul className="flex flex-col absolute top-20 right-[-4px] bg-slate-400 ">
+           <ul className="flex flex-col absolute top-20 right-[-4px] bg-slate-400 " onClick={letToggle}>
            <li
              className="text-base text-textColor hover:text-headingColor duration-100 transition-all ease-in-out cursor-pointer hover:bg-slate-100 px-4 py-2"
              
