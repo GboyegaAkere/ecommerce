@@ -8,6 +8,8 @@ import Login from './auth/Login'
 import { AnimatePresence } from 'framer-motion'
 import Register from './auth/Register'
 import Reset from './auth/Reset'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 
@@ -18,6 +20,7 @@ function App() {
     
     <AnimatePresence>
       <BrowserRouter>
+      <ToastContainer/>
        <Header/>
         <Routes>
           <Route path='/' element={<Home/>}/>

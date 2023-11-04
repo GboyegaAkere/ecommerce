@@ -1,16 +1,45 @@
 import React from 'react'
 import { BsFillPersonFill, BsCart,} from 'react-icons/bs';
 import {  BiAlignJustify} from 'react-icons/bi';
-import { Link } from 'react-router-dom';
+import { Link ,useNavigate} from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
+import { auth } from '../firebase/config';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Header = () => {
   const [toggle, setToggle] = React.useState(false)
+  const [displayName, setDisplayName] = React.useState("")
   const letToggle =()=>{
     setToggle(!toggle)
   }
+ const navigate = useNavigate()
+
+ const logoutUser =() =>{
+  signOut(auth).then(() => {
+    toast.success("success...")
+    navigate("/")
+  }).catch((error) => {
+    // An error happened.
+  });
+ }
+
+ React.useEffect(()=>{
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      const uid = user.uid;
+      setDisplayName(user.displayName)
+    } else {
+      setDisplayName("")
+    }
+  });
+ })
+
+
   return (
     <>
+    <ToastContainer/>
        <header className='hidden md:flex flex-row items-center text-white bg-blue-400 w-full px-4 justify-between h-20 z-50'>
         <h1><Link to="/">MyShop</Link></h1>
         <div className='flex flex-row items-center gap-4'>
@@ -22,9 +51,10 @@ const Header = () => {
         <div className='flex flex-row items-center gap-4'>
           <div className='flex flex-row items-center'>
             <BsFillPersonFill className='text-3xl text-yellow-500'/>
-            <p>Hi <span className='text-purple-900'>akeremale</span></p>
+            <p>Hi <span className='text-purple-900'>{displayName}</span></p>
           </div>
           <p>My Orders</p>
+          <Link to="/"><p onClick={logoutUser} >Logout</p></Link>
           <p><Link to="/login">Login</Link></p>
           <p><Link to="/register">Register</Link></p>
           <div className='flex flex-row items-center'>
@@ -53,6 +83,11 @@ const Header = () => {
               <li>
                 <Link to="/">Home</Link>
               </li>
+
+              <li>
+               <Link to="/"><p onClick={logoutUser} >Logout</p></Link>
+              </li>
+             
               <li>
                 <Link to="/login">Login</Link>
               </li>
